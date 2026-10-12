@@ -1,0 +1,17 @@
+{
+  "name": "BITA TRAINER - パチスロ目押し練習",
+  "short_name": "ビタトレ",
+  "description": "パチスロ目押し・ビタ押しの高精度練習Webアプリ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0a0914",
+  "theme_color": "#0a0914",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
