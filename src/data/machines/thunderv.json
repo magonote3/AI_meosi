@@ -1,0 +1,30 @@
+{
+  "id": "thunderv",
+  "name": "スマスロ サンダーV",
+  "totalKoma": 21,
+  "note": "名機サンダーVのスマスロ版（21コマ）。左リール3連V、単独V、BAR狙いなど多彩なビタ押しポイント。",
+  "symbols": {
+    "v_red": { "name": "V (赤THUNDER)" },
+    "v": { "name": "V (黄THUNDER)" },
+    "red7": { "name": "赤7" },
+    "bar": { "name": "BAR" },
+    "bell": { "name": "ベル" },
+    "suika": { "name": "スイカ" },
+    "cherry": { "name": "チェリー" },
+    "replay": { "name": "リプレイ" }
+  },
+  "reels": {
+    "left": [
+      "bell", "cherry", "red7", "suika", "replay", "bell", "suika", "bar", "suika", "replay",
+      "bell", "v", "cherry", "replay", "bell", "suika", "v", "v", "v_red", "bell", "replay"
+    ],
+    "center": [
+      "suika", "bell", "cherry", "red7", "replay", "suika", "bell", "replay", "red7", "cherry",
+      "bell", "replay", "suika", "bar", "cherry", "bell", "replay", "v", "cherry", "bell", "replay"
+    ],
+    "right": [
+      "cherry", "suika", "replay", "bell", "red7", "cherry", "bar", "replay", "bell", "cherry",
+      "suika", "replay", "bell", "cherry", "replay", "bar", "bell", "v", "suika", "replay", "bell"
+    ]
+  }
+}

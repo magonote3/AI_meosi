@@ -1,0 +1,19 @@
+{
+  "id": "generic",
+  "name": "汎用配列（仮）",
+  "note": "機種が決まるまでの仮の配列。コマ番号は上から1〜21。",
+  "symbols": {
+    "r7": { "name": "赤7" },
+    "b7": { "name": "青7" },
+    "bar": { "name": "BAR" },
+    "cherry": { "name": "チェリー" },
+    "suika": { "name": "スイカ" },
+    "bell": { "name": "ベル" },
+    "replay": { "name": "リプレイ" }
+  },
+  "reels": {
+    "left": ["r7", "replay", "bell", "suika", "cherry", "replay", "bell", "bar", "replay", "bell", "suika", "cherry", "replay", "bell", "b7", "replay", "bell", "suika", "cherry", "replay", "bell"],
+    "center": ["r7", "bell", "replay", "cherry", "bell", "replay", "suika", "bar", "bell", "replay", "cherry", "bell", "replay", "suika", "b7", "bell", "replay", "cherry", "bell", "replay", "suika"],
+    "right": ["r7", "replay", "bell", "suika", "replay", "bell", "bar", "replay", "bell", "suika", "replay", "bell", "b7", "replay", "bell", "suika", "replay", "bell", "cherry", "replay", "bell"]
+  }
+}

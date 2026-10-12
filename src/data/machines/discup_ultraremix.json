@@ -1,0 +1,30 @@
+{
+  "id": "discup_ultraremix",
+  "name": "ディスクアップ ULTRAREMIX",
+  "totalKoma": 20,
+  "note": "20コマ仕様。名物の中リール赤7ビタ（16番赤7）や枠下BAR、リール配列完全再現。",
+  "symbols": {
+    "red7": { "name": "赤7 (UP)" },
+    "white7": { "name": "白7 (ULTRA)" },
+    "bar": { "name": "BAR (DISC UP)" },
+    "remix": { "name": "REMIX" },
+    "suika": { "name": "スイカ" },
+    "cherry": { "name": "チェリー" },
+    "bell": { "name": "星型ベル" },
+    "replay": { "name": "リプレイ" }
+  },
+  "reels": {
+    "left": [
+      "replay", "suika", "bar", "bell", "replay", "cherry", "replay", "bell", "suika", "white7",
+      "bell", "replay", "bell", "suika", "replay", "red7", "suika", "bell", "cherry", "suika"
+    ],
+    "center": [
+      "cherry", "bell", "bell", "replay", "remix", "white7", "bell", "bell", "replay", "cherry",
+      "bar", "suika", "bell", "replay", "cherry", "red7", "suika", "bell", "replay", "remix"
+    ],
+    "right": [
+      "cherry", "white7", "replay", "bell", "suika", "cherry", "remix", "replay", "bell", "suika",
+      "bar", "bell", "replay", "bell", "suika", "red7", "cherry", "replay", "bell", "suika"
+    ]
+  }
+}
