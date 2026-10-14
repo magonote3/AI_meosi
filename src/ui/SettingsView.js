@@ -74,10 +74,10 @@ export class SettingsView {
 
           <div class="form-group" style="margin-bottom:16px;">
             <label>
-              <span>リールサイズ比率 (実機比 70%〜90%)</span>
+              <span>リールサイズ比率 (実機比 70%〜250%)</span>
               <strong id="val-size-pct">${s.sizePct}%</strong>
             </label>
-            <input type="range" id="input-size-pct" min="70" max="90" step="1" value="${s.sizePct}" />
+            <input type="range" id="input-size-pct" min="70" max="250" step="5" value="${s.sizePct}" />
           </div>
 
           <div class="form-group">
@@ -96,7 +96,7 @@ export class SettingsView {
         <div class="glass-panel" style="padding:24px;">
           <h2 style="font-size:1.3rem; color:var(--accent-gold); margin-bottom:8px;">実寸キャリブレーション</h2>
           <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">
-            画面上の青い枠に実物のクレジットカード（横幅85.6mm）を重ね、スライダーで幅をぴったり合わせてください。実機サイズ（70〜90%）がミリ単位で正確に再現されます。
+            画面上の青い枠に実物のクレジットカード（横幅85.6mm）を重ね、スライダーで幅をぴったり合わせてください。実機サイズ（70〜250%）がミリ単位で正確に再現されます。
           </p>
 
           <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin:16px 0;">

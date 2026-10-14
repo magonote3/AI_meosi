@@ -36,26 +36,79 @@ export class RealView {
 
   renderDOM() {
     this.container.innerHTML = `
-      <div class="machine-frame">
-        <!-- Real Mode Header / Stats HUD -->
-        <div class="target-hud glass-panel" style="border-color: var(--accent-pink);">
-          <div class="target-badge">
-            <div class="target-badge-symbol" id="real-symbol-icon"></div>
-            <div class="target-badge-info">
-              <h4>TARGET</h4>
-              <p id="real-symbol-name">-</p>
+      <div class="machine-frame real-cabinet">
+        <!-- Real Mode Header / Stats HUD (実機LEDディスプレイ) -->
+        <div class="cabinet-top-panel">
+          <div class="indicator-lamps">
+            <div class="lamp-unit">
+              <span class="lamp-led bet-active" id="real-lamp-bet"></span>
+              <span class="lamp-label">3 BET</span>
+            </div>
+            <div class="lamp-unit">
+              <span class="lamp-led active" id="real-lamp-insert"></span>
+              <span class="lamp-label">INSERT</span>
+            </div>
+            <div class="lamp-unit">
+              <span class="lamp-led" id="real-lamp-spin"></span>
+              <span class="lamp-label">SPIN</span>
             </div>
           </div>
-          <div style="display:flex; flex-direction:column; align-items:flex-end;">
-            <div style="font-family:var(--font-display); font-size:1.1rem; color:var(--accent-pink);" id="hud-game-counter">0 / 30 G</div>
-            <div style="font-family:var(--font-display); font-weight:700; color:var(--accent-gold);" id="hud-score">SCORE: 0</div>
+
+          <div class="seven-segment-board">
+            <div class="segment-block">
+              <div class="segment-title">GAME</div>
+              <div class="seven-segment-display" id="hud-game-counter" style="color:var(--accent-pink); text-shadow:0 0 10px rgba(236,72,153,0.8);">0/30</div>
+            </div>
+            <div class="segment-block">
+              <div class="segment-title">SCORE</div>
+              <div class="seven-segment-display" id="hud-score" style="color:var(--accent-gold); text-shadow:0 0 10px rgba(234,179,8,0.8);">0</div>
+            </div>
+          </div>
+
+          <div class="target-symbol-pill">
+            <div class="target-badge-symbol" id="real-symbol-icon" style="width:34px; height:34px;"></div>
+            <div class="target-badge-info">
+              <p id="real-symbol-name" style="font-size:0.85rem;">-</p>
+            </div>
           </div>
         </div>
 
-        <!-- Reel Enclosure (本番は補助線一切なし) -->
-        <div class="reel-enclosure" id="real-reel-box">
-          <canvas id="real-canvas"></canvas>
-          <div class="reel-glass-reflection"></div>
+        <!-- Reel Enclosure (本番仕様：削り出し金属ベゼル ＆ タイミングバー) -->
+        <div class="real-reel-bezel" id="real-reel-box">
+          <div class="bezel-bolt top-left"></div>
+          <div class="bezel-bolt top-right"></div>
+          <div class="bezel-bolt bottom-left"></div>
+          <div class="bezel-bolt bottom-right"></div>
+
+          <div class="reel-assembly">
+            <div class="reel-window-inner">
+              <canvas id="real-canvas"></canvas>
+              <div class="reel-acrylic-glass"></div>
+            </div>
+
+            <!-- リール横のタイミングバー -->
+            <div class="timing-bar-enclosure" id="real-timing-bar-box" title="目押しタイミングバー">
+              <div class="timing-bar-header">
+                <span class="timing-header-dot"></span>
+                <span class="timing-header-label">SYNC</span>
+              </div>
+              <div class="timing-bar-track" id="real-timing-bar-track">
+                <div class="timing-grid-mark top"></div>
+                <div class="timing-grid-mark mid"></div>
+                <div class="timing-grid-mark bot"></div>
+                <div class="timing-hit-target" id="real-timing-hit-target">
+                  <span class="timing-hit-badge">JUST</span>
+                </div>
+                <div class="timing-marker" id="real-timing-marker">
+                  <span class="marker-glow"></span>
+                  <span class="marker-core"></span>
+                </div>
+              </div>
+              <div class="timing-bar-footer">
+                <span class="timing-beat-meter" id="real-timing-beat-meter"></span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Judgment Banner & 16-Slice Visualizer -->
@@ -72,17 +125,35 @@ export class RealView {
               <div class="slice-gauge-pin" id="real-slice-pin" style="left: 85%;"></div>
             </div>
             <div class="slice-gauge-labels">
-              <span style="color:#38bdf8;">◀ [並ビタ 5/16]</span>
-              <span style="color:#4ade80;">[良ビタ 7/16]</span>
-              <span style="color:#f87171;">[超ビタ 4/16] ▶</span>
+              <span style="color:#38bdf8;">◀ [並 5/16]</span>
+              <span style="color:#4ade80;">[良 7/16]</span>
+              <span style="color:#f87171;">[超 4/16] ▶</span>
             </div>
           </div>
         </div>
 
-        <!-- Controls -->
-        <div class="controls-panel">
-          <button class="lever-btn" id="real-btn-lever">LEVER ON</button>
-          <button class="stop-btn" id="real-btn-stop" disabled>STOP</button>
+        <!-- Controls (実機操作デッキ) -->
+        <div class="machine-deck">
+          <div class="lever-mount">
+            <button class="real-lever-btn" id="real-btn-lever" title="レバーON (Space / ↑)">
+              <div class="lever-stem"></div>
+              <div class="lever-knob"></div>
+            </button>
+            <div class="lever-caption">START</div>
+          </div>
+
+          <div class="stop-mount">
+            <button class="real-stop-btn" id="real-btn-stop" disabled title="ストップ (Enter / ↓ / Z)">
+              <div class="stop-outer-ring">
+                <div class="stop-inner-dome">
+                  <div class="stop-led-core">
+                    <span class="stop-label">STOP</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+            <div class="stop-caption">STOP 1</div>
+          </div>
         </div>
 
         <!-- Setup Bar (セッション開始前のみ表示) -->
@@ -158,8 +229,57 @@ export class RealView {
     const target = targetManager.getCurrentTarget();
     this.reelController.position = target.komaIndex;
     this.reelController.updateDimensions();
+    this.setupTimingBar();
     // 本番モードは補助なし(null)で描画
     this.reelController.drawFrame(null);
+  }
+
+  setupTimingBar() {
+    const hitTarget = document.getElementById('real-timing-hit-target');
+    const target = targetManager.getCurrentTarget();
+    if (hitTarget) {
+      const posPct = target.posId === 'top' ? '16.6%' : (target.posId === 'bot' ? '83.3%' : '50%');
+      hitTarget.style.top = posPct;
+    }
+
+    this.reelController.onFrameCallback = (position, totalKoma, isRunning) => {
+      this.updateTimingMarker(position, totalKoma, isRunning);
+    };
+  }
+
+  updateTimingMarker(position, totalKoma, isRunning) {
+    const marker = document.getElementById('real-timing-marker');
+    const hitTarget = document.getElementById('real-timing-hit-target');
+    const beatMeter = document.getElementById('real-timing-beat-meter');
+    if (!marker) return;
+
+    const target = targetManager.getCurrentTarget();
+    const targetKoma = target.komaIndex;
+
+    let diff = position - targetKoma;
+    while (diff < -totalKoma / 2) diff += totalKoma;
+    while (diff > totalKoma / 2) diff -= totalKoma;
+
+    const markerPct = (0.5 + (diff / 3)) * 100;
+
+    if (markerPct >= -8 && markerPct <= 108) {
+      marker.style.top = `${Math.max(0, Math.min(100, markerPct))}%`;
+      marker.style.opacity = '1';
+    } else {
+      marker.style.top = '0%';
+      marker.style.opacity = '0.2';
+    }
+
+    const posOffset = target.posId === 'top' ? -1 : (target.posId === 'bot' ? 1 : 0);
+    const hitDiff = Math.abs(diff - posOffset);
+
+    if (hitDiff < 0.22) {
+      hitTarget?.classList.add('hit-flash');
+      beatMeter?.classList.add('pulse');
+    } else {
+      hitTarget?.classList.remove('hit-flash');
+      beatMeter?.classList.remove('pulse');
+    }
   }
 
   updateTargetDisplay() {
@@ -171,6 +291,12 @@ export class RealView {
 
     document.getElementById('real-symbol-icon').innerHTML = getSymbolSVG(symbolName, this.machineData?.id);
     document.getElementById('real-symbol-name').innerText = `${target.komaIndex + 1}番: ${symbolMeta.name} (${posMeta?.name || '中段'})`;
+
+    const hitTarget = document.getElementById('real-timing-hit-target');
+    if (hitTarget) {
+      const posPct = target.posId === 'top' ? '16.6%' : (target.posId === 'bot' ? '83.3%' : '50%');
+      hitTarget.style.top = posPct;
+    }
   }
 
   setupEvents() {
@@ -190,6 +316,13 @@ export class RealView {
     const onLever = () => {
       if (this.reelController.isRunning) return;
       sound.playLever();
+
+      // レバーONアニメーション＆実機ランプ更新
+      btnLever.classList.add('pressed');
+      setTimeout(() => btnLever.classList.remove('pressed'), 180);
+
+      document.getElementById('real-lamp-insert')?.classList.remove('active');
+      document.getElementById('real-lamp-spin')?.classList.add('spin-active');
 
       if (!this.isSessionActive) {
         this.isSessionActive = true;
@@ -224,6 +357,14 @@ export class RealView {
       const stopResult = this.reelController.stop(timeStamp);
 
       sound.playStop();
+
+      // ストップボタン押し込みアニメーション＆実機ランプ復帰
+      btnStop.classList.add('pressed');
+      setTimeout(() => btnStop.classList.remove('pressed'), 140);
+
+      document.getElementById('real-lamp-spin')?.classList.remove('spin-active');
+      document.getElementById('real-lamp-insert')?.classList.add('active');
+
       btnStop.disabled = true;
 
       if (!stopResult) return;

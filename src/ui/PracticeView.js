@@ -26,29 +26,88 @@ export class PracticeView {
 
   renderDOM() {
     this.container.innerHTML = `
-      <div class="machine-frame">
-        <!-- Target HUD -->
-        <div class="target-hud glass-panel">
-          <div class="target-badge">
-            <div class="target-badge-symbol" id="hud-symbol-icon"></div>
-            <div class="target-badge-info">
-              <h4>TARGET</h4>
-              <p id="hud-symbol-name">-</p>
+      <div class="machine-frame real-cabinet">
+        <!-- 実機キャビネット上部：LEDディスプレイ & インジケーターパネル -->
+        <div class="cabinet-top-panel">
+          <div class="indicator-lamps">
+            <div class="lamp-unit">
+              <span class="lamp-led bet-active" id="lamp-bet"></span>
+              <span class="lamp-label">3 BET</span>
+            </div>
+            <div class="lamp-unit">
+              <span class="lamp-led active" id="lamp-insert"></span>
+              <span class="lamp-label">INSERT</span>
+            </div>
+            <div class="lamp-unit">
+              <span class="lamp-led" id="lamp-spin"></span>
+              <span class="lamp-label">SPIN</span>
             </div>
           </div>
-          <div class="target-badge-pos" id="hud-target-pos">中段</div>
+          
+          <div class="seven-segment-board">
+            <div class="segment-block">
+              <div class="segment-title">TARGET</div>
+              <div class="target-symbol-pill">
+                <div class="target-badge-symbol" id="hud-symbol-icon"></div>
+                <div class="target-badge-info">
+                  <p id="hud-symbol-name">-</p>
+                </div>
+              </div>
+            </div>
+            <div class="segment-block">
+              <div class="segment-title">POS</div>
+              <div class="seven-segment-display pos-display" id="hud-target-pos">中段</div>
+            </div>
+          </div>
+
           <button class="btn btn-secondary btn-icon" id="btn-toggle-assists" title="練習補助設定">
-            ⚙️ 補助設定
+            ⚙️ 補助
           </button>
         </div>
 
-        <!-- Reel Enclosure -->
-        <div class="reel-enclosure" id="reel-box">
-          <canvas id="practice-canvas"></canvas>
-          <div class="reel-glass-reflection"></div>
-          <div class="reel-guide-line" id="guide-top"></div>
-          <div class="reel-guide-line active" id="guide-mid"></div>
-          <div class="reel-guide-line" id="guide-bot"></div>
+        <!-- 実機リール窓（削り出し金属ベゼル ＆ アクリルガラス ＆ リール横タイミングバー） -->
+        <div class="real-reel-bezel" id="reel-box">
+          <div class="bezel-bolt top-left"></div>
+          <div class="bezel-bolt top-right"></div>
+          <div class="bezel-bolt bottom-left"></div>
+          <div class="bezel-bolt bottom-right"></div>
+
+          <div class="reel-assembly">
+            <div class="reel-window-inner">
+              <canvas id="practice-canvas"></canvas>
+              <div class="reel-acrylic-glass"></div>
+              <div class="reel-line-track">
+                <div class="reel-guide-line" id="guide-top"><span class="line-lamp"></span><span class="line-lamp"></span></div>
+                <div class="reel-guide-line active" id="guide-mid"><span class="line-lamp"></span><span class="line-lamp"></span></div>
+                <div class="reel-guide-line" id="guide-bot"><span class="line-lamp"></span><span class="line-lamp"></span></div>
+              </div>
+            </div>
+
+            <!-- リール横のタイミングバー -->
+            <div class="timing-bar-enclosure" id="timing-bar-box" title="目押しタイミングバー">
+              <div class="timing-bar-header">
+                <span class="timing-header-dot"></span>
+                <span class="timing-header-label">SYNC</span>
+              </div>
+              <div class="timing-bar-track" id="timing-bar-track">
+                <div class="timing-grid-mark top"></div>
+                <div class="timing-grid-mark mid"></div>
+                <div class="timing-grid-mark bot"></div>
+                <!-- JUST 判定ターゲットライン -->
+                <div class="timing-hit-target" id="timing-hit-target">
+                  <span class="timing-hit-badge">JUST</span>
+                </div>
+                <!-- リアルタイム降下タイミングマーカー -->
+                <div class="timing-marker" id="timing-marker">
+                  <span class="marker-glow"></span>
+                  <span class="marker-core"></span>
+                </div>
+              </div>
+              <div class="timing-bar-footer">
+                <span class="timing-beat-meter" id="timing-beat-meter"></span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Judgment Banner & 16-Slice Visualizer -->
@@ -65,17 +124,35 @@ export class PracticeView {
               <div class="slice-gauge-pin" id="slice-pin" style="left: 85%;"></div>
             </div>
             <div class="slice-gauge-labels">
-              <span style="color:#38bdf8;">◀ 早い [並ビタ 5/16]</span>
-              <span style="color:#4ade80;">[良ビタ 7/16]</span>
-              <span style="color:#f87171;">[超ビタ 4/16] 遅い ▶</span>
+              <span style="color:#38bdf8;">◀ 早い [並 5/16]</span>
+              <span style="color:#4ade80;">[良 7/16]</span>
+              <span style="color:#f87171;">[超 4/16] 遅い ▶</span>
             </div>
           </div>
         </div>
 
-        <!-- Controls -->
-        <div class="controls-panel">
-          <button class="lever-btn" id="btn-lever">LEVER ON</button>
-          <button class="stop-btn" id="btn-stop" disabled>STOP</button>
+        <!-- 実機操作デッキ（スタートレバー ＆ パチスロ丸型ストップボタン） -->
+        <div class="machine-deck">
+          <div class="lever-mount">
+            <button class="real-lever-btn" id="btn-lever" title="レバーON (Space / ↑)">
+              <div class="lever-stem"></div>
+              <div class="lever-knob"></div>
+            </button>
+            <div class="lever-caption">START</div>
+          </div>
+
+          <div class="stop-mount">
+            <button class="real-stop-btn" id="btn-stop" disabled title="ストップ (Enter / ↓ / Z)">
+              <div class="stop-outer-ring">
+                <div class="stop-inner-dome">
+                  <div class="stop-led-core">
+                    <span class="stop-label">STOP</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+            <div class="stop-caption">STOP 1</div>
+          </div>
         </div>
       </div>
 
@@ -121,6 +198,11 @@ export class PracticeView {
           </div>
 
           <div class="form-group" style="flex-direction:row; justify-content:space-between; align-items:center;">
+            <label style="margin:0;">リール横のタイミングバー</label>
+            <input type="checkbox" id="check-timing-bar" checked />
+          </div>
+
+          <div class="form-group" style="flex-direction:row; justify-content:space-between; align-items:center;">
             <label style="margin:0;">狙う段のガイドライン</label>
             <input type="checkbox" id="check-guide" checked />
           </div>
@@ -149,7 +231,68 @@ export class PracticeView {
     this.reelController.position = target.komaIndex;
     this.reelController.updateDimensions();
     this.updateGuidePositions();
+    this.setupTimingBar();
     this.reelController.drawFrame(this.getAssistOptions());
+  }
+
+  setupTimingBar() {
+    const p = practiceSettings.get();
+    const barBox = document.getElementById('timing-bar-box');
+    if (barBox) {
+      barBox.style.display = p.timingBar !== false ? 'flex' : 'none';
+    }
+
+    const hitTarget = document.getElementById('timing-hit-target');
+    const target = targetManager.getCurrentTarget();
+    if (hitTarget) {
+      // 狙う段に応じてJUST判定線の位置を調整（上段: 16.6%, 中段: 50%, 下段: 83.3%）
+      const posPct = target.posId === 'top' ? '16.6%' : (target.posId === 'bot' ? '83.3%' : '50%');
+      hitTarget.style.top = posPct;
+    }
+
+    this.reelController.onFrameCallback = (position, totalKoma, isRunning) => {
+      this.updateTimingMarker(position, totalKoma, isRunning);
+    };
+  }
+
+  updateTimingMarker(position, totalKoma, isRunning) {
+    const marker = document.getElementById('timing-marker');
+    const hitTarget = document.getElementById('timing-hit-target');
+    const beatMeter = document.getElementById('timing-beat-meter');
+    if (!marker) return;
+
+    const target = targetManager.getCurrentTarget();
+    const targetKoma = target.komaIndex;
+
+    // 現在のリール位置 position とターゲットコマの差分（中心位置からのズレ）
+    let diff = position - targetKoma;
+    while (diff < -totalKoma / 2) diff += totalKoma;
+    while (diff > totalKoma / 2) diff -= totalKoma;
+
+    // リール窓の高さは3コマ分。diff = 0 のとき中段（50%）
+    // リール上のターゲット図柄の物理Y座標と100%完全一致で追従
+    const markerPct = (0.5 + (diff / 3)) * 100;
+
+    if (markerPct >= -8 && markerPct <= 108) {
+      marker.style.top = `${Math.max(0, Math.min(100, markerPct))}%`;
+      marker.style.opacity = '1';
+    } else {
+      // 窓外：次に上から流れてくる準備として上部に待機
+      marker.style.top = '0%';
+      marker.style.opacity = '0.2';
+    }
+
+    // 狙い位置（target.posId）でのビタ通過フラッシュ
+    const posOffset = target.posId === 'top' ? -1 : (target.posId === 'bot' ? 1 : 0);
+    const hitDiff = Math.abs(diff - posOffset);
+
+    if (hitDiff < 0.22) {
+      hitTarget?.classList.add('hit-flash');
+      beatMeter?.classList.add('pulse');
+    } else {
+      hitTarget?.classList.remove('hit-flash');
+      beatMeter?.classList.remove('pulse');
+    }
   }
 
   getAssistOptions() {
@@ -165,24 +308,33 @@ export class PracticeView {
   updateGuidePositions() {
     const s = settings.get();
     const ppm = pxPerMm();
-    const scale = (s.sizePct || 80) / 100;
+    const scale = (s.sizePct || 90) / 100;
     const komaH = (s.baseKomaHmm || 30) * ppm * scale;
 
     const gTop = document.getElementById('guide-top');
     const gMid = document.getElementById('guide-mid');
     const gBot = document.getElementById('guide-bot');
 
-    gTop.style.top = `${komaH * 0.5 + 10}px`;
-    gMid.style.top = `${komaH * 1.5 + 10}px`;
-    gBot.style.top = `${komaH * 2.5 + 10}px`;
+    if (gTop && gMid && gBot) {
+      gTop.style.top = `${komaH * 0.5}px`;
+      gMid.style.top = `${komaH * 1.5}px`;
+      gBot.style.top = `${komaH * 2.5}px`;
 
+      const target = targetManager.getCurrentTarget();
+      const p = practiceSettings.get();
+      const showGuide = p.guideLine;
+
+      gTop.classList.toggle('active', showGuide && target.posId === 'top');
+      gMid.classList.toggle('active', showGuide && target.posId === 'mid');
+      gBot.classList.toggle('active', showGuide && target.posId === 'bot');
+    }
+
+    const hitTarget = document.getElementById('timing-hit-target');
     const target = targetManager.getCurrentTarget();
-    const p = practiceSettings.get();
-    const showGuide = p.guideLine;
-
-    gTop.classList.toggle('active', showGuide && target.posId === 'top');
-    gMid.classList.toggle('active', showGuide && target.posId === 'mid');
-    gBot.classList.toggle('active', showGuide && target.posId === 'bot');
+    if (hitTarget) {
+      const posPct = target.posId === 'top' ? '16.6%' : (target.posId === 'bot' ? '83.3%' : '50%');
+      hitTarget.style.top = posPct;
+    }
   }
 
   updateTargetDisplay() {
@@ -210,6 +362,13 @@ export class PracticeView {
       if (this.reelController.isRunning) return;
       sound.playLever();
 
+      // レバーONアニメーション＆実機ランプ更新
+      btnLever.classList.add('pressed');
+      setTimeout(() => btnLever.classList.remove('pressed'), 180);
+
+      document.getElementById('lamp-insert')?.classList.remove('active');
+      document.getElementById('lamp-spin')?.classList.add('spin-active');
+
       const p = practiceSettings.get();
       if (p.order === 'random') {
         const rand = targetManager.pickRandomTarget(21);
@@ -232,6 +391,14 @@ export class PracticeView {
       const stopResult = this.reelController.stop(timeStamp);
 
       sound.playStop();
+
+      // ストップボタン押し込みアニメーション＆実機ランプ復帰
+      btnStop.classList.add('pressed');
+      setTimeout(() => btnStop.classList.remove('pressed'), 140);
+
+      document.getElementById('lamp-spin')?.classList.remove('spin-active');
+      document.getElementById('lamp-insert')?.classList.add('active');
+
       btnLever.disabled = false;
       btnStop.disabled = true;
 
@@ -352,6 +519,13 @@ export class PracticeView {
       practiceSettings.set({ glowTarget: e.target.checked });
       this.reelController.drawFrame(this.getAssistOptions());
     };
+    document.getElementById('check-timing-bar').onchange = (e) => {
+      practiceSettings.set({ timingBar: e.target.checked });
+      const barBox = document.getElementById('timing-bar-box');
+      if (barBox) {
+        barBox.style.display = e.target.checked ? 'flex' : 'none';
+      }
+    };
     document.getElementById('check-guide').onchange = (e) => {
       practiceSettings.set({ guideLine: e.target.checked });
       this.updateGuidePositions();
@@ -373,6 +547,7 @@ export class PracticeView {
     document.getElementById('input-dim').value = p.dimOthers;
     document.getElementById('val-dim').innerText = `${p.dimOthers}%`;
     document.getElementById('check-glow').checked = p.glowTarget;
+    document.getElementById('check-timing-bar').checked = p.timingBar !== false;
     document.getElementById('check-guide').checked = p.guideLine;
     document.getElementById('check-tick').checked = p.tickSound;
     document.getElementById('select-order').value = p.order;

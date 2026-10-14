@@ -8,7 +8,14 @@ export function load(key, fallback) {
     const v = JSON.parse(raw);
     // オブジェクトは既定値とマージ（項目追加に備える）
     if (fallback && typeof fallback === 'object' && !Array.isArray(fallback)) {
-      return deepMerge(structuredClone(fallback), v);
+      const merged = deepMerge(structuredClone(fallback), v);
+      if (key === 'settings') {
+        if (merged._sizeMigrated !== 'v3_90') {
+          merged.sizePct = 90;
+          merged._sizeMigrated = 'v3_90';
+        }
+      }
+      return merged;
     }
     return v;
   } catch {
@@ -39,9 +46,10 @@ function deepMerge(base, over) {
 
 /** アプリ全体の設定 */
 export const DEFAULT_SETTINGS = {
+  _sizeMigrated: 'v3_90',
   machineId: 'discup_ultraremix',
   reel: 'center', // left | center | right
-  sizePct: 80, // 実機比（70〜90）
+  sizePct: 90, // 実機比（70〜250、実サイズの90%）
   baseKomaHmm: 30, // 実機の1コマ高さ（mm）
   baseReelWmm: 55, // 実機のリール幅（mm）
   pxPerMm: null, // キャリブレーション結果（CSS px / mm）。null は既定値
@@ -64,6 +72,7 @@ export const DEFAULT_PRACTICE = {
   dimEnabled: true,
   glowTarget: true,
   guideLine: true,
+  timingBar: true, // リール横のタイミングバー
   markerEnabled: false,
   markerOffset: 2, // 目印：狙いの何コマ上
   tickSound: false,
